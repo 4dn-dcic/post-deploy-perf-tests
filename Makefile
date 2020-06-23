@@ -8,7 +8,7 @@ update:
 	poetry update
 
 test:
-    python -m unittest lib.test.test_locust_api
+	python -m unittest lib.test.test_locust_api
 
 deploy-test:
-    echo "This does nothing right now!"
+	echo "This does nothing right now!"
