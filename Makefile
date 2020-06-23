@@ -9,3 +9,6 @@ update:
 
 test:
     python -m unittest lib.test.test_locust_api
+
+deploy-test:
+    echo "This does nothing right now!"
