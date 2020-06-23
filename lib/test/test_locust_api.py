@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 from unittest.mock import MagicMock
-from ..locust_api import LocustAPI
+from ..locust_api import LocustAuthHandler
 
 
 class TestLocustAPI(unittest.TestCase):
@@ -10,17 +10,17 @@ class TestLocustAPI(unittest.TestCase):
             'username': 'blah',
             'password': 'halb'
         }):
-            api = LocustAPI(auth=__file__, use_env=False)  # this is ok since we patched json.load
+            api = LocustAuthHandler(auth=__file__, use_env=False)  # this is ok since we patched json.load
             self.assertEqual(api.username, 'blah')
             self.assertEqual(api.password, 'halb')
 
     @mock.patch.dict('os.environ', {
-            LocustAPI.LOCUST_USER: 'blah',
-            LocustAPI.LOCUST_PASS: 'halb'
+            LocustAuthHandler.LOCUST_USER: 'blah',
+            LocustAuthHandler.LOCUST_PASS: 'halb'
     })
     def test_load_auth_from_env(self):
-        LocustAPI._verify_creds_in_env = MagicMock(return_value=True)
-        api = LocustAPI(use_env=True)
+        LocustAuthHandler._verify_creds_in_env = MagicMock(return_value=True)
+        api = LocustAuthHandler(use_env=True)
         self.assertEqual(api.username, 'blah')
         self.assertEqual(api.password, 'halb')
 

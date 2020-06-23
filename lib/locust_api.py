@@ -1,15 +1,12 @@
 import os
 import json
-import random
-from requests.auth import HTTPBasicAuth
-from locust import HttpLocust, TaskSet, task, between
 
 
 class LocustAPIException(Exception):
     pass
 
 
-class LocustAPI:
+class LocustAuthHandler:
     """ Contains functions needed to interact with the Locust API in an easy way
         for testing.
     """
@@ -51,3 +48,6 @@ class LocustAPI:
                                          'environment variables were not specified!')
             else:
                 return os.environ[self.LOCUST_USER], os.environ[self.LOCUST_PASS]
+
+    def get_username_and_password(self):
+        return self.username, self.password
