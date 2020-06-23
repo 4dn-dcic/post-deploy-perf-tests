@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "post-deploy-perf-tests"
+version = "0.0.1"
+description = "Collection of performance tests to be run on an environment"
+authors = ["4DN-DCIC Team <support@4dnucleome.org>"]
+license = "MIT"
+readme = "README.rst"
+homepage = "https://github.com/4dn-dcic/post-deploy-perf-tests"
+repository = "https://github.com/4dn-dcic/post-deploy-perf-tests"
+packages = [
+  { include="lib", from="." }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.6,<3.8"
+locust = "^1.0.3"
