@@ -14,5 +14,4 @@ deploy-test-ui:
 	python main.py fourfront
 
 deploy-test-headless:
-	echo "Enable the below test when access key is configured!"
-	# python main.py fourfront --headless
+	python main.py fourfront --headless
