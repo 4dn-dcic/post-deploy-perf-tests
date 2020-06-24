@@ -19,6 +19,11 @@ def build_url(base, postfix):
     return base + postfix
 
 
+# The following item types give no search result and thus 404, so we will not access their collection pages
+BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag', 'SummaryStatistic',
+                  'QualityMetricBamcheck', 'SummaryStatisticHiC']
+
+
 class BasicUser(HttpUser):
     """ Locust user who does basic things on the site at regular intervals. This involves a combination of generic page
         requests and search requests split 75-25. """
@@ -26,7 +31,8 @@ class BasicUser(HttpUser):
     weight = 1  # adjust as needed
     wait_time = between(3, 5)
     _auth = HTTPBasicAuth(*LocustAuthHandler().get_username_and_password())
-    item_types = list(requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys())
+    item_types = list(t for t in requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys()
+                      if t not in BAD_ITEM_TYPES)
 
     @task(1)
     def index(self):
