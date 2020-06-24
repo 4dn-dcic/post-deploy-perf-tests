@@ -18,6 +18,5 @@ To run in headless mode (same mode triggered by Travis): ``make deploy-test-head
 TODOs
 ^^^^^
 
-* Sanitize search strings from ff in searches.json so they are correctly evaluated.
 * Configure for CGAP.
 * Do smarter things with routes (web crawling?).
