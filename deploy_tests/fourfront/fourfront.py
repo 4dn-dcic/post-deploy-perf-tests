@@ -23,6 +23,12 @@ def build_url(base, postfix):
 BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag', 'SummaryStatistic',
                   'QualityMetricBamcheck', 'SummaryStatisticHiC']
 
+# Configuration
+# 3 different 'User' classifications, weighted equally:
+#   * BasicUser - randomly moves from the index page to item collection views.
+#   * NavigationUser - randomly moves between navigation bar pages
+#   * SearchUser - randomly executes a search randomly selected from a source of real searches over several days
+
 
 class BasicUser(HttpUser):
     """ Locust user who does basic things on the site at regular intervals. This involves a combination of generic page
