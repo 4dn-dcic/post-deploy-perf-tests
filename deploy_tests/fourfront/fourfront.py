@@ -16,7 +16,7 @@ def build_url(base, postfix):
     :param postfix: postfix to add, such as /search/?type=Item
     :return: a full url
     """
-    return '/'.join([base, postfix])
+    return base + postfix
 
 
 class BasicUser(HttpUser):
@@ -26,7 +26,7 @@ class BasicUser(HttpUser):
     weight = 1  # adjust as needed
     wait_time = between(3, 5)
     _auth = HTTPBasicAuth(*LocustAuthHandler().get_username_and_password())
-    item_types = requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys()
+    item_types = list(requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys())
 
     @task(1)
     def index(self):
@@ -103,13 +103,13 @@ class NavigationUser(HttpUser):
         self.client.get(route, auth=self._auth)
 
     @task(1)
-    def resource_pages(self):
+    def resource_page(self):
         """ Accesses a random resource page """
         route = build_url(self.host, random.choice(self.tools_pages))
         self.client.get(route, auth=self._auth)
 
     @task(1)
-    def help_pages(self):
+    def help_page(self):
         """ Accesses a random help page """
         route = build_url(self.host, random.choice(self.help_pages))
         self.client.get(route, auth=self._auth)
