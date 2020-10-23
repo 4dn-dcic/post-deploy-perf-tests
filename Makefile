@@ -10,8 +10,14 @@ update:
 test:
 	python -m unittest lib.test.test_locust_api
 
-deploy-test-ui:
+deploy-test-ui-ff:
 	python main.py fourfront
 
-deploy-test-headless:
+deploy-test-headless-ff:
 	python main.py fourfront --headless
+
+deploy-test-ui-cgap:
+	python main.py cgap
+
+deploy-test-headless-cgap:
+	python main.py cgap --headless

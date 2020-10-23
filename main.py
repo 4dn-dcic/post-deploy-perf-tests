@@ -3,7 +3,10 @@ import argparse
 
 
 EPILOG = __doc__
-VALID_ENVS = {'fourfront': 'deploy_tests/fourfront/fourfront.py', 'cgap': None}
+VALID_ENVS = {
+    'fourfront': 'deploy_tests/fourfront/fourfront.py',
+    'cgap': None  # 'deploy_tests/cgap/cgap.py'
+}
 
 
 def main():
@@ -29,7 +32,7 @@ def main():
                 '--headless',
                 '-u', '100',  # number of users
                 '-r', '10',  # hatch rate
-                '--run-time', '60s',
+                '--run-time', '30s',  # 30 seconds for now while testing this out on CGAP
                 '--print-stats'
             ])
         except KeyboardInterrupt:
