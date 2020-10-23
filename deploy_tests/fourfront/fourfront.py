@@ -4,7 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from locust import HttpUser, task, between
 from lib.locust_api import LocustAuthHandler
-from ..utils import build_url
+from deploy_tests.utils import build_url
 
 
 HOST = 'http://staging.4dnucleome.org'  # We run performance tests on staging
