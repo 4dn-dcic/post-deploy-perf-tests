@@ -7,7 +7,7 @@ from lib.locust_api import LocustAuthHandler
 from deploy_tests.utils import build_url
 
 
-HOST = 'http://localhost:8000'
+HOST = 'https://cgap.hms.harvard.edu'
 
 
 # The following item types give no search result and thus 404, so we will not access their collection pages
@@ -15,18 +15,11 @@ BAD_ITEM_TYPES = ['AnnotationField', 'GeneAnnotationField', 'Image', 'QualityMet
                   'WorkflowMapping', 'WorkflowRun']
 
 
-# might be useful?
-CASE_INFO_EXTENSIONS = ['#case-info.accessioning', '#case-info.bioinformatics', '#case-info.filtering']
-
-
-# temporary localhost credentials
-_auth = ('testing-user', 'testing-password')
-
-
 # Configuration
-# 2 User configurations
+# 2 User configurations with possible 3rd extension later
 #   * BasicUser - randomly navigate cases
 #   * SearchUser - randomly execute searches
+#   * NavigationUser - TODO: randomly navigate pages when we have more of them
 
 
 class BasicUser(HttpUser):
@@ -34,8 +27,10 @@ class BasicUser(HttpUser):
     host = HOST
     weight = 1
     wait_time = between(5, 10)
-    _auth = _auth  # HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())  # get CGAP auth
+    _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())  # get CGAP auth
     cases = list(c['@id'] for c in requests.get(build_url(host, "/Case"), auth=_auth).json()['@graph'])
+    item_types = list(t for t in requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys()
+                      if t not in BAD_ITEM_TYPES)
 
     @task(1)
     def case(self):
@@ -43,17 +38,28 @@ class BasicUser(HttpUser):
         c = random.choice(self.cases)
         self.client.get(build_url(self.host, '%s' % c), auth=self._auth)
 
+    @task(1)
+    def collection(self):
+        """ Gets collection views (searches) for all item types except those denoted as "bad" above. """
+        t = random.choice(self.item_types)
+        self.client.get(build_url(self.host, '/%s' % t), auth=self._auth)
+
 
 class SearchUser(HttpUser):
     """ Locust user who will do lots of searches, some involving nested. """
     host = HOST
     weight = 1
     wait_time = between(1, 3)  # more frequent than BasicUser, so this will account for most of traffic
-    _auth = _auth  # HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
-    nested_searches = []
-    standard_searches = []
+    _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
+    searches = json.load(open('./deploy_tests/cgap/searches.json', 'r'))['searches']
 
     @task(1)
     def search(self):
         """ Does a random search """
-        pass
+        route = build_url(self.host, random.choice(self.searches))
+        self.client.get(route, auth=self._auth)
+
+
+class NavigationUser(HttpUser):
+    """ Navigation User for CGAP """
+    pass  # TODO: implement me!
