@@ -27,9 +27,9 @@ def main():
             subprocess.call([
                 'locust', '-f', locust_file_location,
                 '--headless',
-                '-u', '100',  # number of users
+                '-u', '50',  # number of users
                 '-r', '10',  # hatch rate
-                '--run-time', '60s',
+                '--run-time', '120s',
                 '--print-stats'
             ])
         except KeyboardInterrupt:
