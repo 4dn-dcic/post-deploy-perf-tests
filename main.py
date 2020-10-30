@@ -27,7 +27,7 @@ def main():
             subprocess.call([
                 'locust', '-f', locust_file_location,
                 '--headless',
-                '-u', '50',  # number of users
+                '-u', '40',  # number of users
                 '-r', '10',  # hatch rate
                 '--run-time', '120s',
                 '--print-stats'
