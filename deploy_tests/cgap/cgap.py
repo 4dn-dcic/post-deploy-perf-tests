@@ -11,8 +11,8 @@ HOST = 'http://fourfront-cgapdev.9wzadzju3p.us-east-1.elasticbeanstalk.com'
 
 
 # The following item types give no search result and thus 404, so we will not access their collection pages
-BAD_ITEM_TYPES = ['AnnotationField', 'GeneAnnotationField', 'Image', 'QualityMetricPeddyqc', 'TrackingItem',
-                  'WorkflowMapping', 'WorkflowRun']
+BAD_ITEM_TYPES = ['AnnotationField', 'EvidenceDisPheno', 'GeneAnnotationField', 'Image', 'QualityMetricPeddyqc',
+                  'QualityMetricWgsBamqc', 'TrackingItem', 'WorkflowMapping', 'WorkflowRun']
 
 
 # Configuration
@@ -60,6 +60,6 @@ class SearchUser(HttpUser):
         self.client.get(route, auth=self._auth)
 
 
-class NavigationUser(HttpUser):
-    """ Navigation User for CGAP """
-    pass  # TODO: implement me!
+# class NavigationUser(HttpUser):
+#     """ Navigation User for CGAP """
+#     pass  # TODO: implement me!
