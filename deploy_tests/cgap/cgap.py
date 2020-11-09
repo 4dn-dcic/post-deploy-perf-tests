@@ -7,7 +7,7 @@ from lib.locust_api import LocustAuthHandler
 from deploy_tests.utils import build_url
 
 
-HOST = 'https://cgap.hms.harvard.edu'
+HOST = 'http://fourfront-cgapdev.9wzadzju3p.us-east-1.elasticbeanstalk.com'
 
 
 # The following item types give no search result and thus 404, so we will not access their collection pages
