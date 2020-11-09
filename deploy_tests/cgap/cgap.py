@@ -33,13 +33,13 @@ class BasicUser(HttpUser):
                       if t not in BAD_ITEM_TYPES)
 
     @task(1)
-    def case(self):
+    def get_case(self):
         """ Does a get for a random case """
         c = random.choice(self.cases)
         self.client.get(build_url(self.host, '%s' % c), auth=self._auth)
 
     @task(1)
-    def collection(self):
+    def get_collection(self):
         """ Gets collection views (searches) for all item types except those denoted as "bad" above. """
         t = random.choice(self.item_types)
         self.client.get(build_url(self.host, '/%s' % t), auth=self._auth)
@@ -54,7 +54,7 @@ class SearchUser(HttpUser):
     searches = json.load(open('./deploy_tests/cgap/searches.json', 'r'))['searches']
 
     @task(1)
-    def search(self):
+    def get_search(self):
         """ Does a random search """
         route = build_url(self.host, random.choice(self.searches))
         self.client.get(route, auth=self._auth)
