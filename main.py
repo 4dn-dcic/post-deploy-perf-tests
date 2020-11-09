@@ -3,7 +3,10 @@ import argparse
 
 
 EPILOG = __doc__
-VALID_ENVS = {'fourfront': 'deploy_tests/fourfront/fourfront.py', 'cgap': None}
+VALID_ENVS = {
+    'fourfront': 'deploy_tests/fourfront/fourfront.py',
+    'cgap': 'deploy_tests/cgap/cgap.py',
+}
 
 
 def main():

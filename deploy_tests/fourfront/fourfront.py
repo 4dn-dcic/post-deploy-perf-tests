@@ -4,19 +4,10 @@ import requests
 from requests.auth import HTTPBasicAuth
 from locust import HttpUser, task, between
 from lib.locust_api import LocustAuthHandler
+from deploy_tests.utils import build_url
 
 
 HOST = 'http://staging.4dnucleome.org'  # We run performance tests on staging
-
-
-def build_url(base, postfix):
-    """ Combines base + postfix to build a full url
-
-    :param base: base url ie: https://data.4dnucleome.org/
-    :param postfix: postfix to add, such as /search/?type=Item
-    :return: a full url
-    """
-    return base + postfix
 
 
 # The following item types give no search result and thus 404, so we will not access their collection pages

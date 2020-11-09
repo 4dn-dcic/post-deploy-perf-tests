@@ -9,4 +9,12 @@ install:
   - make build
 script:
   - make test
-  - make deploy-test-headless
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - |
+    if [[ $BRANCH == 'cgap' ]]; then
+      echo 'Triggering CGAP test';
+      make deploy-test-headless-cgap;
+    else
+      echo 'Triggering FF test';
+      make deploy-test-headless-ff;
+    fi

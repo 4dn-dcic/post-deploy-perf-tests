@@ -1,6 +1,5 @@
 import unittest
 from unittest import mock
-from unittest.mock import MagicMock
 from ..locust_api import LocustAuthHandler
 
 
@@ -15,12 +14,20 @@ class TestLocustAPI(unittest.TestCase):
             self.assertEqual(api.password, 'halb')
 
     @mock.patch.dict('os.environ', {
-            LocustAuthHandler.LOCUST_USER: 'blah',
-            LocustAuthHandler.LOCUST_PASS: 'halb'
+            LocustAuthHandler.LOCUST_USER_FF: 'blah',
+            LocustAuthHandler.LOCUST_PASS_FF: 'halb'
     })
-    def test_load_auth_from_env(self):
-        LocustAuthHandler._verify_creds_in_env = MagicMock(return_value=True)
+    def test_load_auth_from_ff_env(self):
         api = LocustAuthHandler(use_env=True)
+        self.assertEqual(api.username, 'blah')
+        self.assertEqual(api.password, 'halb')
+
+    @mock.patch.dict('os.environ', {
+        LocustAuthHandler.LOCUST_USER_CGAP: 'blah',
+        LocustAuthHandler.LOCUST_PASS_CGAP: 'halb'
+    })
+    def test_load_auth_from_cgap_env(self):
+        api = LocustAuthHandler(use_env=True, is_ff=False)  # do CGAP
         self.assertEqual(api.username, 'blah')
         self.assertEqual(api.password, 'halb')
 
