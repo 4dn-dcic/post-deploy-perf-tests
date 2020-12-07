@@ -29,7 +29,7 @@ class LocustAuthHandler:
         """ Helper method for below functions"""
         if user_key not in os.environ or password_key not in os.environ:
             raise LocustAPIException('Tried to load Locust auth from environment but'
-                                     'environment variables were not specified (%s)!' % user_key)
+                                     ' environment variables were not specified (%s)!' % user_key)
         else:
             return os.environ[user_key], os.environ[password_key]
 
