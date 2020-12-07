@@ -26,4 +26,4 @@ jobs:
       - name: CI
         run: |
           make test
-          make deploy-test-deadless-ff
+          make deploy-test-headless-ff
