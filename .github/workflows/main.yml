@@ -25,5 +25,6 @@ jobs:
 
       - name: CI
         run: |
+          make build
           make test
           make deploy-test-headless-ff
