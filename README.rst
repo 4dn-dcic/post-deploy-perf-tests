@@ -8,7 +8,7 @@ A collection of tests to be run to assess performance on a given FF/CGAP environ
 How To Run
 ^^^^^^^^^^
 
-Trigger a build through Travis manually, or run locust locally to get very fine grained control and also get access to their UI which has some nice charts on it. It also allows you to download the test data. See the Makefile and locust docs on how Locust is invoked here.
+Trigger a build through GA manually, or run locust locally to get very fine grained control and also get access to their UI which has some nice charts on it. It also allows you to download the test data. See the Makefile and locust docs on how Locust is invoked here.
 
 To run locally with UI: ``make deploy-test-ui-ff``
 
