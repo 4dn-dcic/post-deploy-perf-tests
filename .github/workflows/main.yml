@@ -1,6 +1,6 @@
 # Post Deploy Performance Testing Github Action Workflow
 
-name: CI
+name: Performance-Fourfront 
 
 # Controls when the action will run. 
 on:
