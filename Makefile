@@ -14,7 +14,7 @@ deploy-test-ui-ff:
 	python main.py fourfront
 
 deploy-test-headless-ff:
-	python main.py fourfront --headless
+	poetry run python main.py fourfront --headless
 
 deploy-test-ui-cgap:
 	python main.py cgap
