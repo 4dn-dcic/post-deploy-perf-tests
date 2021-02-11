@@ -4,8 +4,9 @@ name: Performance-Fourfront
 
 # Controls when the action will run. 
 on:
-  # Triggered only manually
-  workflow_dispatch:
+  # Scheduled Monday and Thursday 7am ET / 11am UTC
+  schedule:
+    - cron: "0 11 * * 1,4"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
