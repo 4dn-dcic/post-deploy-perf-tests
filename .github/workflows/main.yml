@@ -7,6 +7,8 @@ on:
   # Scheduled Monday and Thursday 7am ET / 11am UTC
   schedule:
     - cron: "0 11 * * 1,4"
+  # Also can be run manually
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
