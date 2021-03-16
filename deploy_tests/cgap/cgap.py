@@ -45,19 +45,20 @@ class BasicUser(HttpUser):
         self.client.get(build_url(self.host, '/%s' % t), auth=self._auth)
 
 
-class SearchUser(HttpUser):
-    """ Locust user who will do lots of searches, some involving nested. """
-    host = HOST
-    weight = 1
-    wait_time = between(5, 10)  # Normal user actually is more representative (case navigation) so make these even
-    _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
-    searches = json.load(open('./deploy_tests/cgap/searches.json', 'r'))['searches']
-
-    @task(1)
-    def get_search(self):
-        """ Does a random search """
-        route = build_url(self.host, random.choice(self.searches))
-        self.client.get(route, auth=self._auth)
+# TODO: re-enable once more search data is available
+# class SearchUser(HttpUser):
+#     """ Locust user who will do lots of searches, some involving nested. """
+#     host = HOST
+#     weight = 1
+#     wait_time = between(5, 10)  # Normal user actually is more representative (case navigation) so make these even
+#     _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
+#     searches = json.load(open('./deploy_tests/cgap/searches.json', 'r'))['searches']
+#
+#     @task(1)
+#     def get_search(self):
+#         """ Does a random search """
+#         route = build_url(self.host, random.choice(self.searches))
+#         self.client.get(route, auth=self._auth)
 
 
 # class NavigationUser(HttpUser):
