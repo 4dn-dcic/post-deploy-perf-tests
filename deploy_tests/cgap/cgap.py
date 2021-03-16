@@ -49,7 +49,7 @@ class SearchUser(HttpUser):
     """ Locust user who will do lots of searches, some involving nested. """
     host = HOST
     weight = 1
-    wait_time = between(1, 3)  # more frequent than BasicUser, so this will account for most of traffic
+    wait_time = between(5, 10)  # Normal user actually is more representative (case navigation) so make these even
     _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
     searches = json.load(open('./deploy_tests/cgap/searches.json', 'r'))['searches']
 
