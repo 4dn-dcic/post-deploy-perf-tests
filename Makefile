@@ -20,4 +20,4 @@ deploy-test-ui-cgap:
 	python main.py cgap
 
 deploy-test-headless-cgap:
-	python main.py cgap --headless
+	poetry run python main.py cgap --headless
