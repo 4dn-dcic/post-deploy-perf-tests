@@ -4,9 +4,9 @@ name: Performance-Fourfront
 
 # Controls when the action will run. 
 on:
-  # Scheduled Monday and Thursday 7am ET / 11am UTC
+  # Scheduled daily 7am EST / 11am UTC
   schedule:
-    - cron: "0 11 * * 1,4"
+    - cron: "0 11 * * *"
   # Also can be run manually
   workflow_dispatch:
 
