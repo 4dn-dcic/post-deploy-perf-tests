@@ -2,6 +2,16 @@ import os
 import json
 
 
+HEADERS = {
+    'Accept': 'application/json'
+}
+
+
+def pdpt_get(*, client, url, auth):
+    """ Wrapper function for all gets done by the locust API that will pass application/json """
+    return client.get(url, auth=auth, headers=HEADERS)
+
+
 class LocustAPIException(Exception):
     pass
 

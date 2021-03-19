@@ -3,7 +3,7 @@ import random
 import requests
 from requests.auth import HTTPBasicAuth
 from locust import HttpUser, task, between
-from lib.locust_api import LocustAuthHandler
+from lib.locust_api import LocustAuthHandler, pdpt_get
 from deploy_tests.utils import build_url
 
 
@@ -34,7 +34,7 @@ class BasicUser(HttpUser):
     @task(1)
     def index(self):
         """ Gets the main page - normal request + search AJAX requests """
-        self.client.get(build_url(self.host, '/'), auth=self._auth)
+        pdpt_get(client=self.client, url=build_url(self.host, '/'), auth=self._auth)
 
     @task(3)
     def search(self):
@@ -43,7 +43,7 @@ class BasicUser(HttpUser):
             stress back-end resources.
         """
         t = random.choice(self.item_types)
-        self.client.get(build_url(self.host, '/%s' % t), auth=self._auth)
+        pdpt_get(client=self.client, url=build_url(self.host, '/%s' % t), auth=self._auth)
 
 
 class NavigationUser(HttpUser):
@@ -97,25 +97,25 @@ class NavigationUser(HttpUser):
     def data_page(self):
         """ Accesses a random data page """
         route = build_url(self.host, random.choice(self.data_pages))
-        self.client.get(route, auth=self._auth)
+        pdpt_get(client=self.client, url=route, auth=self._auth)
 
     @task(1)
     def tools_page(self):
         """ Accesses a random tools page """
         route = build_url(self.host, random.choice(self.tools_pages))
-        self.client.get(route, auth=self._auth)
+        pdpt_get(client=self.client, url=route, auth=self._auth)
 
     @task(1)
     def resource_page(self):
         """ Accesses a random resource page """
         route = build_url(self.host, random.choice(self.tools_pages))
-        self.client.get(route, auth=self._auth)
+        pdpt_get(client=self.client, url=route, auth=self._auth)
 
     @task(1)
     def help_page(self):
         """ Accesses a random help page """
         route = build_url(self.host, random.choice(self.help_pages))
-        self.client.get(route, auth=self._auth)
+        pdpt_get(client=self.client, url=route, auth=self._auth)
 
 
 class SearchUser(HttpUser):
@@ -132,4 +132,4 @@ class SearchUser(HttpUser):
     def search(self):
         """ Does a random search """
         route = build_url(self.host, random.choice(self.searches))
-        self.client.get(route, auth=self._auth)
+        pdpt_get(client=self.client, url=route, auth=self._auth)
