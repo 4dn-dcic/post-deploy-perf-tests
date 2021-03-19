@@ -2,6 +2,7 @@ import os
 import json
 
 
+# XXX: Passing this header makes the application significantly slower - WHY? -Will 03/19/2021
 HEADERS = {
     'Accept': 'application/json'
 }
@@ -9,7 +10,7 @@ HEADERS = {
 
 def pdpt_get(*, client, url, auth):
     """ Wrapper function for all gets done by the locust API that will pass application/json """
-    return client.get(url, auth=auth, headers=HEADERS)
+    return client.get(url, auth=auth)
 
 
 class LocustAPIException(Exception):
