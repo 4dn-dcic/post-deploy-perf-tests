@@ -7,8 +7,8 @@ from lib.locust_api import LocustAuthHandler, pdpt_get
 from deploy_tests.utils import build_url
 
 
-HOST = 'http://staging.4dnucleome.org'  # We run performance tests on staging
-
+#HOST = 'http://staging.4dnucleome.org'  # We run performance tests on staging
+HOST = 'http://fourfront-mastertest-1312345630.us-east-1.elb.amazonaws.com'
 
 # The following item types give no search result and thus 404, so we will not access their collection pages
 BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag', 'SummaryStatistic',

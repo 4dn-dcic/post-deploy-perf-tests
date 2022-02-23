@@ -8,8 +8,9 @@ from deploy_tests.utils import build_url
 
 
 # TODO: make arg
-#HOST = 'https://cgap-msa.hms.harvard.edu'
-HOST = 'https://cgap-devtest.hms.harvard.edu'
+HOST = 'https://cgap-msa.hms.harvard.edu'
+#HOST = 'https://cgap-mgb.hms.harvard.edu'
+#HOST = 'https://cgap-devtest.hms.harvard.edu'
 
 
 # Configuration
@@ -24,30 +25,31 @@ class BasicUser(HttpUser):
     weight = 1
     wait_time = between(3, 5)
     _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())  # get CGAP auth
-    cases = list(c['@id'] for c in requests.get(build_url(host, "/Case?limit=10"), auth=_auth).json()['@graph'])
+    cases = list(c['@id'] for c in requests.get(build_url(host, "/Case?limit=20"), auth=_auth).json()['@graph'])
+    vsl = list(c['@id'] for c in requests.get(build_url(host, '/VariantSampleList?limit=10'), auth=_auth).json()['@graph'])
     # These types are most data model intensive
     item_types = ['Case', 'Variant', 'VariantSample', 'FileProcessed', 'File', 'QualityMetric',
                   'MetaWorkflow', 'MetaWorkflowRun']
 
-    @task(1)
+    @task(8)
     def get_case(self):
         """ Does a get for a random case """
         c = random.choice(self.cases)
         self.client.get(build_url(self.host, '%s' % c), auth=self._auth)
 
-    @task(4)
-    def get_collection(self):
-        """ Gets collection views (searches) for all item types except those denoted as "bad" above. """
-        t = random.choice(self.item_types)
-        self.client.get(build_url(self.host, '/%s' % t), auth=self._auth)
+    # enable this to get info about VSL, but not an expensive API
+    #@task(1)
+    def get_vsl(self):
+        """ Does a get for a random variant sample list (intepretation space) """
+        c = random.choice(self.vsl)
+        self.client.get(build_url(self.host, '%s' % c), auth=self._auth)
 
 
-# TODO: re-enable once more search data is available
 class SearchUser(HttpUser):
     """ Locust user who will do lots of searches, some involving nested. """
     pagination_depth = 30  # limit depth - adjust this value accordingly
     host = HOST
-    weight = 1
+    weight = 3
     wait_time = between(4, 8)  # Normal user actually is more representative (case navigation) so make these even
     _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
     counts = requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare']
