@@ -21,6 +21,7 @@ class LocustAuthHandler:
     """ Contains functions needed to interact with the Locust API in an easy way
         for testing.
     """
+    LOCUST_HOST = 'LOCUST_HOST'
     LOCUST_USER_FF = 'LOCUST_USER'
     LOCUST_PASS_FF = 'LOCUST_PASS'
     LOCUST_USER_CGAP = 'LOCUST_USER_CGAP'
@@ -33,7 +34,15 @@ class LocustAuthHandler:
         :param use_env: whether or not to pull LOCUST_USER/LOCUST_PASS from env or config file
         :param is_ff: whether or not we building a connection to FF or CGAP (access keys differ)
         """
+        self.host = self._get_host_from_env()
         self.username, self.password = self._load_access_keys(auth=auth, use_env=use_env, is_ff=is_ff)
+
+    def _get_host_from_env(self):
+        """ Helper that grabs host from env """
+        if self.LOCUST_HOST not in os.environ:
+            raise LocustAPIException('Tried to load locust without setting LOCUST_HOST!')
+        else:
+            return os.environ[self.LOCUST_HOST]
 
     @staticmethod
     def _get_creds_from_env(user_key, password_key):

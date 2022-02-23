@@ -7,12 +7,6 @@ from lib.locust_api import LocustAuthHandler
 from deploy_tests.utils import build_url
 
 
-# TODO: make arg
-HOST = 'https://cgap-msa.hms.harvard.edu'
-#HOST = 'https://cgap-mgb.hms.harvard.edu'
-#HOST = 'https://cgap-devtest.hms.harvard.edu'
-
-
 # Configuration
 # 2 User configurations with possible 3rd extension later
 #   * BasicUser - randomly navigate cases
@@ -21,10 +15,11 @@ HOST = 'https://cgap-msa.hms.harvard.edu'
 #
 class BasicUser(HttpUser):
     """ Locust user who will randomly get a case, spending 5-10 seconds on the page """
-    host = HOST
+    locust_auth = LocustAuthHandler(is_ff=False)
+    host = locust_auth.host
     weight = 1
     wait_time = between(3, 5)
-    _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())  # get CGAP auth
+    _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())  # get CGAP auth
     cases = list(c['@id'] for c in requests.get(build_url(host, "/Case?limit=20"), auth=_auth).json()['@graph'])
     vsl = list(c['@id'] for c in requests.get(build_url(host, '/VariantSampleList?limit=10'), auth=_auth).json()['@graph'])
     # These types are most data model intensive
@@ -48,10 +43,11 @@ class BasicUser(HttpUser):
 class SearchUser(HttpUser):
     """ Locust user who will do lots of searches, some involving nested. """
     pagination_depth = 30  # limit depth - adjust this value accordingly
-    host = HOST
+    locust_auth = LocustAuthHandler(is_ff=False)
+    host = locust_auth.host
     weight = 3
     wait_time = between(4, 8)  # Normal user actually is more representative (case navigation) so make these even
-    _auth = HTTPBasicAuth(*LocustAuthHandler(is_ff=False).get_username_and_password())
+    _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())
     counts = requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare']
     searches = []
     for t, counts in counts.items():
