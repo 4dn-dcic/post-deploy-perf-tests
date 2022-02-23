@@ -32,6 +32,7 @@ jobs:
         env:
           LOCUST_USER: ${{ secrets.LOCUST_USER }}
           LOCUST_PASS: ${{ secrets.LOCUST_PASS }}
+          LOCUST_HOST: http://staging.4dnucleome.org
         run: |
           make build
           make test

@@ -7,9 +7,6 @@ from lib.locust_api import LocustAuthHandler, pdpt_get
 from deploy_tests.utils import build_url
 
 
-HOST = 'http://staging.4dnucleome.org'  # We run performance tests on staging
-
-
 # The following item types give no search result and thus 404, so we will not access their collection pages
 BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag', 'SummaryStatistic',
                   'QualityMetricBamcheck', 'SummaryStatisticHiC']
@@ -24,10 +21,11 @@ BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag'
 class BasicUser(HttpUser):
     """ Locust user who does basic things on the site at regular intervals. This involves a combination of generic page
         requests and search requests split 75-25. """
-    host = HOST
+    locust_auth = LocustAuthHandler()
+    host = locust_auth.host
     weight = 1  # adjust as needed
     wait_time = between(3, 5)
-    _auth = HTTPBasicAuth(*LocustAuthHandler().get_username_and_password())
+    _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())
     item_types = list(t for t in requests.get(build_url(host, "/counts?format=json")).json()['db_es_compare'].keys()
                       if t not in BAD_ITEM_TYPES)
 
@@ -49,10 +47,11 @@ class BasicUser(HttpUser):
 class NavigationUser(HttpUser):
     """ Locust user who "clicks" through all navigation bar links at a faster rate than the
         BasicUser. """
-    host = HOST
+    locust_auth = LocustAuthHandler()
+    host = locust_auth.host
     weight = 1  # adjust as needed
     wait_time = between(1, 3)
-    _auth = HTTPBasicAuth(*LocustAuthHandler().get_username_and_password())
+    _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())
     data_pages = [
         '/browse/?experimentset_type=replicate&type=ExperimentSetReplicate',
         '/browse/?experimentset_type=replicate&type=ExperimentSetReplicate&experiments_in_set.experiment_type.experiment_category=Sequencing',
@@ -122,10 +121,11 @@ class SearchUser(HttpUser):
     """ Locust user who does only search requests at a faster rate than both of the previous two.
         Searches are picked randomly from a sample of searches on production.
     """
-    host = HOST
+    locust_auth = LocustAuthHandler()
+    host = locust_auth.host
     weight = 1  # adjust as needed
     wait_time = between(1, 2)
-    _auth = HTTPBasicAuth(*LocustAuthHandler().get_username_and_password())
+    _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())
     searches = json.load(open('./deploy_tests/fourfront/searches.json', 'r'))['searches']
 
     @task(1)
