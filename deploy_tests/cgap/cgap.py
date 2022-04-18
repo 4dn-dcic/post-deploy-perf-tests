@@ -20,7 +20,7 @@ class BasicUser(HttpUser):
     weight = 1
     wait_time = between(3, 5)
     _auth = HTTPBasicAuth(*locust_auth.get_username_and_password())  # get CGAP auth
-    print(requests.get(build_url(host, "/Case?limit=20"), auth=_auth).json())
+    requests.get(build_url(host, "/Case?limit=20"), auth=_auth).json()
     cases = list(c['@id'] for c in requests.get(build_url(host, "/Case?limit=20"), auth=_auth).json()['@graph'])
     vsl = list(c['@id'] for c in requests.get(build_url(host, '/VariantSampleList?limit=10'), auth=_auth).json()['@graph'])
     # These types are most data model intensive
