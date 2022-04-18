@@ -30,7 +30,7 @@ jobs:
         env:
           LOCUST_USER_CGAP: ${{ secrets.LOCUST_USER_CGAP }}
           LOCUST_PASS_CGAP: ${{ secrets.LOCUST_PASS_CGAP }}
-          LOCUST_HOST: https://cgap-devtest.hms.harvard.edu
+          LOCUST_HOST: ${{ secrets.LOCUST_HOST_CGAP }}
         run: |
           make build
           make test
