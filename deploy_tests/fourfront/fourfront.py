@@ -9,7 +9,7 @@ from deploy_tests.utils import build_url
 
 # The following item types give no search result and thus 404, so we will not access their collection pages
 BAD_ITEM_TYPES = ['Target', 'SopMap', 'PublicationTracking', 'QualityMetricFlag', 'SummaryStatistic',
-                  'QualityMetricBamcheck', 'SummaryStatisticHiC']
+                  'QualityMetricBamcheck', 'SummaryStatisticHiC', 'ImageSetting']
 
 # Configuration
 # 3 different 'User' classifications, weighted equally:
