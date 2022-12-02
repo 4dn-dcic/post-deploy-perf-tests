@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "post-deploy-perf-tests"
-version = "0.3.1"
+version = "0.4.0"
 description = "Collection of performance tests to be run on an environment"
 authors = ["4DN-DCIC Team <support@4dnucleome.org>"]
 license = "MIT"
@@ -12,5 +12,5 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<3.8"
+python = ">=3.8,<3.9"
 locust = "^2.8.2"
